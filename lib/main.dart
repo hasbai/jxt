@@ -9,7 +9,10 @@ void main() {
     theme: ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
-      textTheme:  const TextTheme(
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.teal,
+      ),
+      textTheme: const TextTheme(
         bodySmall: TextStyle(fontSize: 16),
         bodyMedium: TextStyle(fontSize: 16),
         bodyLarge: TextStyle(fontSize: 24),
@@ -32,14 +35,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const DefaultTextStyle(
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.black,
-          ),
-          child: MyHomePage(),
+      style: TextStyle(
+        fontSize: 16,
+        color: Colors.black,
+      ),
+      child: MyHomePage(),
     );
   }
 }
+
+const List<Widget> pages = [
+  Laundry(),
+  About(),
+];
+
+const List<String> labels = [
+  'Laundry',
+  'About',
+];
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -50,15 +63,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _index = 0;
-  final List<String> labels = [
-    'Laundry',
-    'About',
-  ];
-
-  final List<Widget> pages = [
-    const Laundry(),
-    const About(),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +70,16 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(labels[_index]),
       ),
-      body: pages[_index],
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(4, 16, 4, 0),
+        child: IndexedStack(
+          index: _index,
+          children: const [
+            TabNavigator(0),
+            TabNavigator(1),
+          ],
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _index,
         onTap: (int index) {
@@ -85,6 +98,28 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class TabNavigator extends StatelessWidget {
+  const TabNavigator(this.index, {super.key});
+
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return Navigator(
+      initialRoute: '/',
+      onGenerateRoute: (RouteSettings settings) {
+        WidgetBuilder builder;
+        switch (settings.name) {
+          default:
+            builder = (context) => pages[index];
+            break;
+        }
+        return MaterialPageRoute(builder: builder);
+      },
     );
   }
 }
