@@ -1,46 +1,47 @@
+abstract class ResponseItem {
+  ResponseItem();
+  ResponseItem.fromJson(Map<String, dynamic> json);
+}
+
+class BasicResponse<T> {
+  int code;
+  String message;
+  T data;
+
+  BasicResponse({required this.code, required this.message, required this.data});
+  factory BasicResponse.fromJson(Map<String, dynamic> json) => BasicResponse<T>(
+      code: json['code'], message: json['message'], data: mappingT2Class(T, json['data']));
+}
+
 class ListResponse<T> {
   int code;
   String message;
-  ListResponseData<T> data;
+  List<T> data;
+
   ListResponse({required this.code, required this.message, required this.data});
-  factory ListResponse.fromJson(
-          json, T Function(Map<String, dynamic> o) fromJson) =>
-      ListResponse<T>(
+  factory ListResponse.fromJson(Map<String, dynamic> json) => ListResponse<T>(
         code: json['code'],
         message: json['message'],
-        data: ListResponseData.fromJson(json['data'], fromJson),
+        data: List<T>.from([for (var x in json['items']) mappingT2Class(T, x)]),
       );
 }
 
-class ListResponseData<T> {
+class Page<T> implements ResponseItem {
   int page;
   int pageSize;
   int total;
   List<T> items;
-  ListResponseData(
-      {required this.page,
-      required this.pageSize,
-      required this.total,
-      required this.items});
+  Page({required this.page, required this.pageSize, required this.total, required this.items});
 
-  factory ListResponseData.fromJson(Map<String, dynamic> json,
-          T Function(Map<String, dynamic> o) fromJson) =>
-      ListResponseData<T>(
+  factory Page.fromJson(Map<String, dynamic> json) => Page<T>(
         page: json['page'],
         pageSize: json['pageSize'],
         total: json['total'],
-        items: List<T>.from([for (var x in json['items']) fromJson(x)]),
+        items: List<T>.from([for (var x in json['items']) mappingT2Class(T, x)]),
       );
 }
 
-class ResponseItem {
-  ResponseItem();
-  factory ResponseItem.fromJson(Map<String, dynamic> json) {
-    throw UnimplementedError();
-  }
-}
-
-class LaundryRoom extends ResponseItem {
+class LaundryRoom implements ResponseItem {
   int id;
   int shopId;
   String name;
@@ -96,7 +97,7 @@ class LaundryRoom extends ResponseItem {
       };
 }
 
-class WashingMachine {
+class WashingMachine implements ResponseItem {
   int id;
   String name;
   String floorCode;
@@ -124,4 +125,19 @@ class WashingMachine {
         "floorCode": floorCode,
         "state": state,
       };
+}
+
+dynamic mappingT2Class(Type t, Map<String, dynamic> json) {
+  switch (t) {
+    case LaundryRoom:
+      return LaundryRoom.fromJson(json);
+    case const (Page<LaundryRoom>):
+      return Page<LaundryRoom>.fromJson(json);
+    case WashingMachine:
+      return WashingMachine.fromJson(json);
+    case const (Page<WashingMachine>):
+      return Page<WashingMachine>.fromJson(json);
+    default:
+      throw UnimplementedError('Unknown type');
+  }
 }

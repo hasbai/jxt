@@ -22,7 +22,7 @@ Future<List<LaundryRoom>> getLaundryRooms(
     '/position/nearPosition',
     data: {'lng': lng, 'lat': lat, 'pageSize': 100},
   );
-  var response = ListResponse<LaundryRoom>.fromJson(resp.data, LaundryRoom.fromJson);
+  var response = BasicResponse<Page<LaundryRoom>>.fromJson(resp.data);
   return response.data.items;
 }
 
@@ -34,7 +34,7 @@ Future<List<WashingMachine>> _getWashingMachines(int laundryID, int category) as
     '/position/deviceDetailPage',
     data: {'positionId': laundryID.toString(), 'categoryCode': category.toString().padLeft(2, '0')},
   );
-  var response = ListResponse<WashingMachine>.fromJson(resp.data, WashingMachine.fromJson);
+  var response = BasicResponse<Page<WashingMachine>>.fromJson(resp.data);
   for (var i = 0; i < response.data.items.length; i++) {
     response.data.items[i].category = category;
   }
