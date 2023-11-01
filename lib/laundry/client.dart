@@ -17,31 +17,24 @@ final dio = Dio(BaseOptions(
 ));
 
 Future<List<LaundryRoom>> getLaundryRooms(
-    {String lng = '***REMOVED***',
-    String lat = '***REMOVED***'}) async {
+    {String lng = '***REMOVED***', String lat = '***REMOVED***'}) async {
   var resp = await dio.post(
     '/position/nearPosition',
     data: {'lng': lng, 'lat': lat, 'pageSize': 100},
   );
-  var response =
-      ListResponse<LaundryRoom>.fromJson(resp.data, LaundryRoom.fromJson);
+  var response = ListResponse<LaundryRoom>.fromJson(resp.data, LaundryRoom.fromJson);
   return response.data.items;
 }
 
 const categoryWashingMachine = 0;
 const categoryDryingMachine = 2;
 
-Future<List<WashingMachine>> _getWashingMachines(
-    int laundryID, int category) async {
+Future<List<WashingMachine>> _getWashingMachines(int laundryID, int category) async {
   var resp = await dio.post(
     '/position/deviceDetailPage',
-    data: {
-      'positionId': laundryID.toString(),
-      'categoryCode': category.toString().padLeft(2, '0')
-    },
+    data: {'positionId': laundryID.toString(), 'categoryCode': category.toString().padLeft(2, '0')},
   );
-  var response =
-      ListResponse<WashingMachine>.fromJson(resp.data, WashingMachine.fromJson);
+  var response = ListResponse<WashingMachine>.fromJson(resp.data, WashingMachine.fromJson);
   for (var i = 0; i < response.data.items.length; i++) {
     response.data.items[i].category = category;
   }

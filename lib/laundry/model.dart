@@ -101,6 +101,7 @@ class WashingMachine {
   String name;
   String floorCode;
   int state;
+  bool available;
   int category = 0;
 
   WashingMachine({
@@ -108,7 +109,7 @@ class WashingMachine {
     required this.name,
     required this.floorCode,
     required this.state,
-  });
+  }) : available = state == 1;
 
   factory WashingMachine.fromJson(Map<String, dynamic> json) => WashingMachine(
         id: json["id"],

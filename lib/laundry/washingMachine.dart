@@ -41,8 +41,6 @@ class _WashingMachineList extends State<WashingMachineList> {
   }
 }
 
-const stateIdle = 1;
-
 class WashingMachineInfo extends StatelessWidget {
   const WashingMachineInfo(this.obj, {super.key});
   final WashingMachine obj;
@@ -67,8 +65,7 @@ class WashingMachineInfo extends StatelessWidget {
                 borderRadius: BorderRadius.circular(64),
                 boxShadow: [
                   BoxShadow(
-                    color: (obj.state == stateIdle ? Colors.green : Colors.red)
-                        .withAlpha(128),
+                    color: (obj.available ? Colors.green : Colors.red).withAlpha(128),
                     blurRadius: 4,
                     spreadRadius: 0.0,
                     offset: const Offset(0, 1),
@@ -77,9 +74,7 @@ class WashingMachineInfo extends StatelessWidget {
               ),
               child: Icon(
                 Icons.circle,
-                color: obj.state == stateIdle
-                    ? Colors.green[600]
-                    : Colors.red[700],
+                color: obj.available ? Colors.green[600] : Colors.red[700],
               ),
             )
           ],
