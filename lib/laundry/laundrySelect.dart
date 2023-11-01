@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../components/loading.dart';
 import 'client.dart';
-import 'laundryRoom.dart';
+import 'model.dart';
 
 class LaundrySelect extends StatefulWidget {
   const LaundrySelect({super.key});
@@ -15,7 +15,7 @@ class _LaundrySelect extends State<LaundrySelect> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<LaundryRoom>>(
-      future: getLaundryRoom(),
+      future: getLaundryRooms(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const Loading();

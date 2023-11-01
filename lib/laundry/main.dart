@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:jxt_toolkits/laundry/laundryRoom.dart';
+import 'package:jxt_toolkits/laundry/washingMachine.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'laundrySelect.dart';
+import 'model.dart';
 
 class Laundry extends StatefulWidget {
   const Laundry({super.key});
@@ -51,6 +52,8 @@ class _LaundryState extends State<Laundry> {
               selectLaundry(context);
             },
           ),
+          const SizedBox(height: 8),
+          Expanded(child: WashingMachineList(laundryID)),
         ]);
   }
 
