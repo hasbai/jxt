@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'about.dart';
+import 'consts.dart';
 import 'laundry/main.dart';
 
 void main() {
@@ -10,18 +11,19 @@ void main() {
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
       appBarTheme: const AppBarTheme(
+        foregroundColor: Colors.white,
         backgroundColor: Colors.teal,
       ),
       textTheme: const TextTheme(
-        bodySmall: TextStyle(fontSize: 16),
+        bodySmall: TextStyle(fontSize: 14),
         bodyMedium: TextStyle(fontSize: 16),
-        bodyLarge: TextStyle(fontSize: 24),
-        displaySmall: TextStyle(fontSize: 16),
-        displayMedium: TextStyle(fontSize: 16),
-        displayLarge: TextStyle(
-          fontSize: 72,
-          fontWeight: FontWeight.bold,
-        ),
+        bodyLarge: TextStyle(fontSize: 20),
+        titleSmall: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        titleMedium: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        titleLarge: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        displayLarge: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+      ).apply(
+        displayColor: Colors.teal[700],
       ),
     ),
     home: const MyApp(),
@@ -34,24 +36,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const DefaultTextStyle(
-      style: TextStyle(
-        fontSize: 16,
-        color: Colors.black,
-      ),
-      child: MyHomePage(),
-    );
+    return const MyHomePage();
   }
 }
 
 const List<Widget> pages = [
   Laundry(),
   About(),
-];
-
-const List<String> labels = [
-  'Laundry',
-  'About',
 ];
 
 class MyHomePage extends StatefulWidget {
@@ -67,18 +58,12 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(labels[_index]),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(4, 16, 4, 0),
-        child: IndexedStack(
-          index: _index,
-          children: const [
-            TabNavigator(0),
-            TabNavigator(1),
-          ],
-        ),
+      body: IndexedStack(
+        index: _index,
+        children: const [
+          TabNavigator(0),
+          TabNavigator(1),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _index,
@@ -90,11 +75,11 @@ class _MyHomePageState extends State<MyHomePage> {
         items: [
           BottomNavigationBarItem(
             icon: const Icon(Icons.home),
-            label: labels[0],
+            label: tabNames[0],
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.person),
-            label: labels[1],
+            label: tabNames[1],
           ),
         ],
       ),

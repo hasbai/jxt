@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 abstract class ResponseItem {
   ResponseItem();
   ResponseItem.fromJson(Map<String, dynamic> json);
@@ -22,7 +24,7 @@ class ListResponse<T> {
   factory ListResponse.fromJson(Map<String, dynamic> json) => ListResponse<T>(
         code: json['code'],
         message: json['message'],
-        data: List<T>.from([for (var x in json['items']) mappingT2Class(T, x)]),
+        data: List<T>.from([for (var x in json['data']) mappingT2Class(T, x)]),
       );
 }
 
@@ -127,6 +129,73 @@ class WashingMachine implements ResponseItem {
       };
 }
 
+class Sku implements ResponseItem {
+  int id;
+  String name;
+  String description;
+  String price;
+  String minutes;
+  List<SkuItem> items;
+
+  Sku({
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.price,
+    required this.minutes,
+    required this.items,
+  });
+
+  factory Sku.fromJson(Map<String, dynamic> json) {
+    var sku = Sku(
+      id: json["id"],
+      name: json["name"],
+      description: json["feature"],
+      price: json["price"],
+      minutes: json["unit"],
+      items: skuItemFromJson(json["extAttr"]),
+    );
+    if (sku.items.isEmpty) {
+      sku.items.add(SkuItem(price: sku.price, minutes: sku.minutes));
+    }
+    return sku;
+  }
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "feature": description,
+        "price": price,
+        "unit": minutes,
+        "items": items
+      };
+}
+
+List<SkuItem> skuItemFromJson(String str) =>
+    List<SkuItem>.from(json.decode(str).map((x) => SkuItem.fromJson(x)));
+
+String skuItemToJson(SkuItem data) => json.encode(data.toJson());
+
+class SkuItem {
+  String price;
+  String minutes;
+
+  SkuItem({
+    required this.price,
+    required this.minutes,
+  });
+
+  factory SkuItem.fromJson(Map<String, dynamic> json) => SkuItem(
+        price: json["price"].toString(),
+        minutes: json["minutes"].toString(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "price": price,
+        "minutes": minutes,
+      };
+}
+
 dynamic mappingT2Class(Type t, Map<String, dynamic> json) {
   switch (t) {
     case LaundryRoom:
@@ -137,6 +206,8 @@ dynamic mappingT2Class(Type t, Map<String, dynamic> json) {
       return WashingMachine.fromJson(json);
     case const (Page<WashingMachine>):
       return Page<WashingMachine>.fromJson(json);
+    case Sku:
+      return Sku.fromJson(json);
     default:
       throw UnimplementedError('Unknown type');
   }
