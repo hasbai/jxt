@@ -182,6 +182,35 @@ class SkuItem {
       };
 }
 
+class User {
+  String nickname;
+  int gender;
+  String avatar;
+  String phone;
+
+  User({
+    required this.nickname,
+    required this.gender,
+    required this.avatar,
+    required this.phone,
+  });
+
+  factory User.fromJson(Map<String, dynamic> json) => User(
+    nickname: json["nickname"],
+    gender: json["gender"],
+    avatar: json["avatar"],
+    phone: json["phone"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "nickname": nickname,
+    "gender": gender,
+    "avatar": avatar,
+    "phone": phone,
+  };
+}
+
+
 dynamic mappingT2Class(Type t, Map<String, dynamic> json) {
   switch (t) {
     case LaundryRoom:

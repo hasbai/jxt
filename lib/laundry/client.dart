@@ -17,6 +17,11 @@ void initDio(){
     navigatorKey: navigatorKeys[Pages.laundry]!,
     loginPage: Login(),
     tokenName: tokenNames[Pages.laundry]!,
+    authenticatedEndpoints: [
+      '/trade/preview',
+      '/trade/create',
+      '/account/getAccountInfo',
+    ]
   ));
 }
 
@@ -34,17 +39,13 @@ class MyInterceptor extends Interceptor {
   MyInterceptor({
     required this.navigatorKey,
     required this.loginPage,
-    required this.tokenName,
+    this.tokenName = 'token',
+    this.authenticatedEndpoints = const <String>[],
   });
-
   final GlobalKey<NavigatorState> navigatorKey;
   final StatelessWidget loginPage;
+  final List<String> authenticatedEndpoints;
   final String tokenName;
-
-  static const authenticatedEndpoints = <String>[
-    '/trade/preview',
-    '/trade/create',
-  ];
 
   @override
   void onRequest(

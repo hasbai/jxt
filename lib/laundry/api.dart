@@ -46,8 +46,7 @@ Future<List<Sku>> getSkus(int machineID) async {
     '/goods/normal/items',
     queryParameters: {'goodsId': machineID.toString()},
   );
-  var response = ListResponse<Sku>.fromJson(resp.data);
-  return response.data;
+  return ListResponse<Sku>.fromJson(resp.data).data;
 }
 
 Future<bool> createOrder(Sku sku,WashingMachine machine, String time) async {
@@ -93,4 +92,11 @@ Future<String> login(String phone, String code) async {
     throw Exception('Login failed');
   }
   return token;
+}
+
+Future<User> getUserInfo() async {
+  var resp = await dio.get(
+    '/account/getAccountInfo',
+  );
+  return User.fromJson(resp.data);
 }

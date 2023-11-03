@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jxt_toolkits/components/layout.dart';
 import 'package:jxt_toolkits/laundry/sku.dart';
+import 'package:jxt_toolkits/laundry/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/loading.dart';
@@ -61,6 +62,16 @@ class _LaundryState extends State<Laundry> {
     return Skeleton(
       appbar: AppBar(
         title: const Text('Laundry'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const UserPage()),
+              );
+            },
+          ),
+        ],
       ),
       body: Column(children: [
         ElevatedButton(
