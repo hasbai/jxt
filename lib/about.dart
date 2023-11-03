@@ -8,14 +8,16 @@ class About extends StatelessWidget {
   Widget build(BuildContext context) {
     return Skeleton(
         appbar: AppBar(title: const Text('About')),
-        body: const Center(child:
-          Expanded(child:
-            Text("This is JXT's toolkits.\n"
-                "One tool is for booking the laundry room.\n"
-                "More features are currently under development..."
-              ),
+        body: const Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children:[
+            Center(child: Text(
+              "This is JXT's toolkits.\n"
+              "One tool is for booking the laundry room.\n"
+              "More features are currently under development...",
+              )
           )
-        )
+      ])
     );
   }
 }
