@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 
-import 'about.dart';
 import 'consts.dart';
 import 'laundry/main.dart';
 
+void init(){
+  initLaundry();
+}
+
 void main() {
+  init();
   runApp(MaterialApp(
     title: 'JXT Toolkits',
+    scaffoldMessengerKey: snackbarKey,
+    home: const MyApp(),
     theme: ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
@@ -22,11 +28,11 @@ void main() {
         titleMedium: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         titleLarge: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         displayLarge: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+        labelLarge: TextStyle(fontSize: 16),
       ).apply(
         displayColor: Colors.teal[700],
       ),
     ),
-    home: const MyApp(),
   ));
 }
 
@@ -40,10 +46,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-const List<Widget> pages = [
-  Laundry(),
-  About(),
-];
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -61,8 +63,8 @@ class _MyHomePageState extends State<MyHomePage> {
       body: IndexedStack(
         index: _index,
         children: const [
-          TabNavigator(0),
-          TabNavigator(1),
+          TabNavigator(Pages.laundry),
+          TabNavigator(Pages.about),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -75,11 +77,11 @@ class _MyHomePageState extends State<MyHomePage> {
         items: [
           BottomNavigationBarItem(
             icon: const Icon(Icons.home),
-            label: tabNames[0],
+            label: pageNames[Pages.laundry],
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.person),
-            label: tabNames[1],
+            label: pageNames[Pages.about],
           ),
         ],
       ),
@@ -88,19 +90,20 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class TabNavigator extends StatelessWidget {
-  const TabNavigator(this.index, {super.key});
+  const TabNavigator(this.page, {super.key});
 
-  final int index;
+  final Pages page;
 
   @override
   Widget build(BuildContext context) {
     return Navigator(
+      key: navigatorKeys[page],
       initialRoute: '/',
       onGenerateRoute: (RouteSettings settings) {
         WidgetBuilder builder;
         switch (settings.name) {
           default:
-            builder = (context) => pages[index];
+            builder = (context) => pages[page]!;
             break;
         }
         return MaterialPageRoute(builder: builder);

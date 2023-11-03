@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../components/loading.dart';
-import 'client.dart';
+import 'api.dart';
 import 'model.dart';
 
 class LaundrySelect extends StatefulWidget {

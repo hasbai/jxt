@@ -4,7 +4,8 @@ import 'package:jxt_toolkits/components/loading.dart';
 import 'package:jxt_toolkits/laundry/model.dart';
 
 import '../components/toggleButtons.dart';
-import 'client.dart';
+import 'api.dart';
+import 'order.dart';
 
 class SkuPage extends StatefulWidget {
   const SkuPage(this.machine, {super.key});
@@ -82,8 +83,14 @@ class _SkuPage extends State<SkuPage> {
               ),
             ]),
             const Spacer(),
-            OutlinedButton(
-              onPressed: ()=>{},
+            OutlinedButton(onPressed: ()=>{
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
+                OrderPage(
+                  sku: data[selectedSku],
+                  machine: widget.machine,
+                  time: data[selectedSku].items[selectedTime].minutes
+                ),
+              ))},
               style: OutlinedButton.styleFrom(
                 fixedSize: const Size(160, 60),
                 shape: RoundedRectangleBorder(

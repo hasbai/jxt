@@ -4,9 +4,14 @@ import 'package:jxt_toolkits/laundry/sku.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/loading.dart';
+import 'api.dart';
 import 'client.dart';
 import 'laundrySelect.dart';
 import 'model.dart';
+
+void initLaundry(){
+  initDio();
+}
 
 class Laundry extends StatefulWidget {
   const Laundry({super.key});

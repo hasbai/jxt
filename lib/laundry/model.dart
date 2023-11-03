@@ -5,27 +5,13 @@ abstract class ResponseItem {
   ResponseItem.fromJson(Map<String, dynamic> json);
 }
 
-class BasicResponse<T> {
-  int code;
-  String message;
-  T data;
-
-  BasicResponse({required this.code, required this.message, required this.data});
-  factory BasicResponse.fromJson(Map<String, dynamic> json) => BasicResponse<T>(
-      code: json['code'], message: json['message'], data: mappingT2Class(T, json['data']));
-}
-
 class ListResponse<T> {
-  int code;
-  String message;
   List<T> data;
 
-  ListResponse({required this.code, required this.message, required this.data});
-  factory ListResponse.fromJson(Map<String, dynamic> json) => ListResponse<T>(
-        code: json['code'],
-        message: json['message'],
-        data: List<T>.from([for (var x in json['data']) mappingT2Class(T, x)]),
-      );
+  ListResponse({required this.data});
+  factory ListResponse.fromJson(List<dynamic> json) => ListResponse<T>(
+      data: List<T>.from([for (var x in json) mappingT2Class(T, x)]),
+  );
 }
 
 class Page<T> implements ResponseItem {
