@@ -1,14 +1,22 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 
+import '../utils.dart';
 import 'client.dart';
 import 'model.dart';
 
-Future<List<LaundryRoom>> getLaundryRooms(
-    {String lng = '***REMOVED***',
-      String lat = '***REMOVED***'}) async {
+Future<List<LaundryRoom>> getLaundryRooms() async {
+  var position = await getLocation();
+  log('Location: (${position.longitude}, ${position.latitude})');
+
   var resp = await dio.post(
     '/position/nearPosition',
-    data: {'lng': lng, 'lat': lat, 'pageSize': 100},
+    data: {
+      'lng': position.longitude,
+      'lat': position.latitude,
+      'pageSize': 100
+    },
   );
   var response = Page<LaundryRoom>.fromJson(resp.data);
   return response.items;
