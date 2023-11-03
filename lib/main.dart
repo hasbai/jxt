@@ -13,6 +13,7 @@ void main() {
     title: 'JXT Toolkits',
     scaffoldMessengerKey: snackbarKey,
     home: const MyApp(),
+    debugShowCheckedModeBanner: false,
     theme: ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
