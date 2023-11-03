@@ -12,7 +12,7 @@ const ua = 'Hailelife/1.0.3 (iPhone; iOS 16.0.2; Scale/3.00)';
 const baseUrl = 'https://yshz-user.haier-ioc.com';
 
 void initDio(){
-  dio.interceptors.add(LogInterceptor());
+  // dio.interceptors.add(LogInterceptor());
   dio.interceptors.add(MyInterceptor(
     navigatorKey: navigatorKeys[Pages.laundry]!,
     loginPage: Login(),
