@@ -4,14 +4,11 @@ import 'package:geolocator/geolocator.dart';
 import 'consts.dart';
 
 _handleLocationPermission() async {
-  bool serviceEnabled;
-  LocationPermission permission;
-
-  serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  var serviceEnabled = await Geolocator.isLocationServiceEnabled();
   if (!serviceEnabled) {
     throw Exception('Location services are disabled.');
   }
-  permission = await Geolocator.checkPermission();
+  var permission = await Geolocator.checkPermission();
   if (permission == LocationPermission.denied) {
     permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied) {
@@ -26,6 +23,14 @@ _handleLocationPermission() async {
 Future<Position> getLocation() async {
   try{
     await _handleLocationPermission();
+    // var position = await Geolocator.getLastKnownPosition();
+    // if (position != null) {
+    //   Geolocator.getCurrentPosition();
+    //   return position;
+    // }
+    return await Geolocator.getCurrentPosition(
+      timeLimit: const Duration(seconds: 10),
+    );
   } catch (e) {
     snackbarKey.currentState?.showSnackBar(
       SnackBar(
@@ -38,6 +43,6 @@ Future<Position> getLocation() async {
         )
       )
     );
+    rethrow;
   }
-  return await Geolocator.getCurrentPosition();
 }
